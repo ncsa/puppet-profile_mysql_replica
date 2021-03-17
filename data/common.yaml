@@ -1,0 +1,29 @@
+---
+lookup_options:
+  mysql::server::override_options:
+    merge: "hash"
+  profile_mysql_replica::yumrepos:
+    merge: "hash"
+
+mysql::server::override_options:
+  "mysqld":
+    - "server-id": "999"
+    #- "datadir": "/usr/data/mysql/data"
+    - "socket": "/var/lib/mysql/mysql.sock"
+    - "log-error": "/var/log/mysql/error.log"
+    - "log_error_services": "'log_filter_internal; log_sink_syseventlog'"
+    - "pid-file": "/run/mysqld/mysqld.pid"
+    #- "tmpdir": "/usr/data/mysql/tmp"
+    - "slow_query_log": "ON"
+    - "gtid_mode": "ON"
+    - "enforce-gtid-consistency": "ON"
+    - "character-set-server": "utf8mb4"
+    - "collation-server": "utf8mb4_bin"
+    - "default-storage-engine": "INNODB"
+    - "max_allowed_packet": "256M"
+    - "innodb_log_file_size": "2GB"
+    - "transaction-isolation": "READ-COMMITTED"
+    - "binlog_format": "row"
+mysql::server::remove_default_accounts: true
+mysql::server::restart: true
+mysql::server::root_password: "mysql"
